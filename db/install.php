@@ -17,7 +17,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 function xmldb_local_sincroniza_plugin_install() {
-    global $DB;
+    global $DB, $CFG, $OUTPUT;
+
+    require_once($CFG->libdir . '/ddl/database_manager.php');
+    $dbman = $DB->get_manager();
 
     $table = new xmldb_table('local_sincroniza_plugin_data');
 
@@ -42,9 +45,16 @@ function xmldb_local_sincroniza_plugin_install() {
     $key->setType(XMLDB_KEY_PRIMARY);
     $table->addKey($key);
 
-    $sql = $table->toSQL();
-    $DB->execute($sql);
+    $dbman = $DB->get_manager();
 
+    // Cria a tabela e armazena o resultado na variável $status
+    $status = $dbman->create_table($table);
+
+    // Verifica se a tabela foi criada com sucesso
+    if ($status) {
+        // A tabela foi criada com sucesso, faça algo aqui se necessário
+    } else {
+        // A tabela não foi criada com sucesso, trate o erro aqui se necessário
+    }
 }
 ?>
-
