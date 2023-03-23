@@ -33,4 +33,3 @@ function xmldb_local_meuplugin_upgrade($oldversion) {
     // Retorna true indicando que a atualização foi realizada com sucesso
     return true;
 }
- ?>

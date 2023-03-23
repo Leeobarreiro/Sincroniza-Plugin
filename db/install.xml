@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/meuplugin/db" VERSION="2022031000" FILE="install.xml"
+<XMLDB PATH="local/sincroniza_plugin/db" VERSION="2022031000" FILE="install.xml"
        COMMENT="Instalação do plugin Meu Plugin Local">
 
     <TABLES>

@@ -1,0 +1,48 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+defined('MOODLE_INTERNAL') || die();
+
+function xmldb_local_sincroniza_plugin_install() {
+    global $DB;
+
+    $table = new xmldb_table('local_sincroniza_plugin_data');
+
+    $field_id = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+    $field_userid = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+    $field_courseid = new xmldb_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+    $field_coursename = new xmldb_field('coursename', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+    $field_progress = new xmldb_field('progress', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+    $field_completion = new xmldb_field('completion', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null);
+    $field_cohorts = new xmldb_field('cohorts', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+
+    $table->addField($field_id);
+    $table->addField($field_userid);
+    $table->addField($field_courseid);
+    $table->addField($field_coursename);
+    $table->addField($field_progress);
+    $table->addField($field_completion);
+    $table->addField($field_cohorts);
+
+    if ($DB->get_manager()->table_exists($table)) {
+        $DB->drop_table($table);
+    }
+
+    $DB->create_table($table);
+}
+
+?>
+
