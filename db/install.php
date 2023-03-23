@@ -37,12 +37,13 @@ function xmldb_local_sincroniza_plugin_install() {
     $table->addField($field_completion);
     $table->addField($field_cohorts);
 
-    if ($DB->get_manager()->table_exists($table)) {
-        $DB->drop_table($table);
-    }
+    $key = new xmldb_key('primary');
+    $key->setFields(array('id'));
+    $key->setType(XMLDB_KEY_PRIMARY);
+    $table->addKey($key);
 
-    $DB->create_table($table);
+    $sql = $table->getCreateTableSQL();
+    $DB->execute($sql);
 }
-
 ?>
 
