@@ -42,8 +42,9 @@ function xmldb_local_sincroniza_plugin_install() {
     $key->setType(XMLDB_KEY_PRIMARY);
     $table->addKey($key);
 
-    $sql = $table->getCreateTableSQL();
+    $sql = $table->toSQL();
     $DB->execute($sql);
+
 }
 ?>
 
