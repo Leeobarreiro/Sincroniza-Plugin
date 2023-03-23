@@ -22,7 +22,7 @@ function xmldb_local_sincroniza_plugin_install() {
     require_once($CFG->libdir . '/ddl/database_manager.php');
     $dbman = $DB->get_manager();
 
-    $table = new xmldb_table('local_sincroniza_plugin_data');
+    $table = new xmldb_table('local_alunoinfo_data');
 
     $field_id = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
     $field_userid = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
