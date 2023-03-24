@@ -1,5 +1,8 @@
 <?php
+
 namespace local_sincroniza_plugin\task;
+
+require_once($CFG->libdir . '/completionlib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -27,7 +30,6 @@ class sync_data extends \core\task\scheduled_task {
         JOIN {enrol} e ON e.id = ue.enrolid
         JOIN {course} c ON c.id = e.courseid
         WHERE e.status = :status
-
     ", array('status' => ENROL_INSTANCE_ENABLED));
 
         // Iterate over enrolments to gather user data.
@@ -40,14 +42,11 @@ class sync_data extends \core\task\scheduled_task {
                 continue;
             }
 
-            // Gather user's progress data for this course.
             $course = new \stdClass();
             $course->id = $courseid;
-            $progress = \core_progress\manager::get_course_progress($userid, $course);
-            $completion = \core_completion\api::is_course_complete($userid, $course);
-
-            // Get user's cohort information.
-            $cohorts = implode(',', cohort_get_user_cohortids($userid));
+            $progress = \core_completion\progress::get_course_progress_percentage($course, $userid);
+            $completion = new \completion_info($course);
+            $is_complete = $completion->is_course_complete($userid); // Alteração realizada aqui.
 
             // Insert data into Aluno Info table.
             $data = new \stdClass();
@@ -55,8 +54,7 @@ class sync_data extends \core\task\scheduled_task {
             $data->courseid = $courseid;
             $data->coursename = $enrolment->fullname;
             $data->progress = $progress;
-            $data->completion = $completion;
-            $data->cohorts = $cohorts;
+            $data->completion = $is_complete; // Alteração realizada aqui.
 
             // Check if additional fields are defined and populate them if they exist.
             $alunoinfoconfig = get_config('local_alunoinfo');
